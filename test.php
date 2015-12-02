@@ -35,28 +35,48 @@ HTML
 HTML
 	);	
 } else {
-	$utilisateur = Utilisateur::createFromSession();
 
-	$page->appendJs(<<<JAVASCRIPT
-		$($.fn.cacherBoutons = function() {
-			$('.iden').hide();
-		});
+        $utilisateur = Utilisateur::createFromSession();
+
+        $page->appendJs(<<<JAVASCRIPT
+            $($.fn.cacherBoutons = function() {
+                $('.iden').hide();
+            });
 JAVASCRIPT
-	);
+        );
 
-	//LA VALEUR DE NIVEAU EST CHANGEE SI L'UTILISATEUR EST CONNECTE
-	$niveau = $utilisateur->idNiveau;
+        //LA VALEUR DE NIVEAU EST CHANGEE SI L'UTILISATEUR EST CONNECTE
+        $niveau = $utilisateur->idNiveau;
 
-	$page->appendContent(<<<HTML
-	{$utilisateur->profil()}
-	{$deco}
+        $page->appendContent(<<<HTML
+        {$utilisateur->profil()}
+        {$deco}
 HTML
-	);
+    );
+
 }
 
 //AJOUT DU PANEL QUOI QU'IL ADVIENNE
 $page->appendPanel($niveau) ; 
 
-$page->appendContent("<div id='content'></div>") ;
+$page->appendContent(<<<HTML
+
+<section id="content"> 
+    <p> 
+        Ferrars all spirits his imagine effects amongst neither. It bachelor cheerful of mistaken. Tore has sons put upon wife use bred seen. Its dissimilar invitation ten has discretion unreserved. Had you him humoured jointure ask expenses learning. Blush on in jokes sense do do. Brother hundred he assured reached on up no. On am nearer missed lovers. To it mother extent temper figure better.
+        Ferrars all spirits his imagine effects amongst neither. It bachelor cheerful of mistaken. Tore has sons put upon wife use bred seen. Its dissimilar invitation ten has discretion unreserved. Had you him humoured jointure ask expenses learning. Blush on in jokes sense do do. Brother hundred he assured reached on up no. On am nearer missed lovers. To it mother extent temper figure better. 
+    </p>
+    <p> 
+        Ferrars all spirits his imagine effects amongst neither. It bachelor cheerful of mistaken. Tore has sons put upon wife use bred seen. Its dissimilar invitation ten has discretion unreserved. Had you him humoured jointure ask expenses learning. Blush on in jokes sense do do. Brother hundred he assured reached on up no. On am nearer missed lovers. To it mother extent temper figure better.
+        Ferrars all spirits his imagine effects amongst neither. It bachelor cheerful of mistaken. Tore has sons put upon wife use bred seen. Its dissimilar invitation ten has discretion unreserved. Had you him humoured jointure ask expenses learning. Blush on in jokes sense do do. Brother hundred he assured reached on up no. On am nearer missed lovers. To it mother extent temper figure better. 
+    </p> 
+</section>
+HTML
+);
+
+$page->appendToFooter(<<<HTML
+    
+HTML
+);
 
 echo $page->toHTML();

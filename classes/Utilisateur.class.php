@@ -249,12 +249,14 @@ SQL
 
 	}
 
-	public static function isConnected() {	
-		try {	
-		self::startSession();
-		} catch (SessionException $e) {
+    public static function isConnected() {
+        
+        try {
+            self::startSession();
+        } catch (SessionException $e ) {
 
-		}
+        }
+
 		if (isSet($_SESSION['connected'])) {
 			return true;
 		} else {
@@ -318,13 +320,10 @@ SQL
 
 	public static function loginFormSHA1($action, $submitText = 'OK') {
         
-        try {
+       try { 
 		self::startSession();
-        } catch (SessionException $e) {
-
-        }
-
-
+       } catch(SessionException $e) {
+       }
 		$_SESSION[self::session_key]['challenge'] = self::randomString(20) ; 
 		$html = <<<HTML
 <script type='text/javascript' src='js/sha1.js'></script>

@@ -4,40 +4,32 @@ $($.fn.categories = function(){
 	var menus = $("#categories li ul li");
 	menus.hide();
 
-	var categories = $("#categories li");
+	var categories = $("#categories > li");
 
-	categories.mouseover(function(){   // On affiche les menus déroulants.
-			var width = $(document).width();
-			$(this).find("ul").css({
-									"padding-top": "50px",
-									"margin-top": "10px",
-									"width": width,
-									"position": "absolute",
-									"left": "0",
-									"background-color": "#002266",								
-									"opacity": "0.8"
-								});
+	categories.mouseenter(function(){   // On affiche les menus déroulants.
 
-			$(this).find("ul li").css({
-									"margin-left": "-40px",
-									"display": "list-item",
-									"list-style-type": "none"
-									});
+		$(this).find("ul").css({
+			"left": $(this).position().left,
+			"top": $(this).position().top + $(this).height() + 30
+		});
 
-			$(this).find("ul").stop().slideDown("fast");
+		$(this).find("ul li").css({
+			"display": "list-item",
+		});
+
+		$(this).find("ul").stop().slideDown("fast");
 	});
 
-	categories.mouseout(function(){				
+	categories.mouseleave(function(){				
 		$(this).find("ul").stop().slideUp("fast");  // On cache les menus déroulant.
 	});
-
-    var action = '../ajax/pages.php' ; 
- 
+    var test;
 	menus.on('click', function () {
 		var idMenu = $(this).attr('id') ; 
-
-		$.post(action, {
+test = idMenu;
+		$.post('../ajax/menus.php', {
     		idMenu: idMenu
+            
 		}, function(data) {
 			$('#content').html(data);				
 		});
@@ -46,12 +38,18 @@ $($.fn.categories = function(){
 
 	categories.on('click', function () {
 		var idCtg = $(this).attr('id') ; 
-
-		$.post(action, {
-    		idCtg: idCtg
-		}, function(data) {
+       
+        if(test == null){
+		$.post('../ajax/categories.php', {
+        		idCtg: idCtg
+        
+    		}, function(data) {
 			$('#content').html(data);				
 		});
+    } else { 
+        test = null;
+    }
+      
 
 	});
 });	
@@ -149,7 +147,7 @@ $($.fn.inscription = function() {
 
 		show: function() {
 
-			if (connexionForm.container.is(':hidden') && $('#inscription').is(':hidden')) {
+			if (connexionForm.container.is(':hidden') && $('#connexion').is(':hidden')) {
 				connexionForm.close.call(connexionForm.container);
 				connexionForm.container[connexionForm.config.effect](connexionForm.config.speed);
 			}
@@ -274,12 +272,3 @@ $('#connexion').submit(function() {
 		});
 		return false;
 	});
-
-
-
-
-
-
-
-
-

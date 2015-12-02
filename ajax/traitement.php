@@ -63,7 +63,7 @@ require_once('../classes/Utilisateur.class.php') ;
 			exit();
 		} else {
 			Utilisateur::ajoutUtilisateur(2);
-			echo '<div class="succes">L\'inscription a réussit !</div>' ;
+			echo '<div class="succes">L\'inscription a réussi !</div>' ;
 			exit();
 		}
 	}
