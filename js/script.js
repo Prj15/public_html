@@ -25,8 +25,8 @@ $($.fn.categories = function(){
 	});
     var test;
 	menus.on('click', function () {
-		var idMenu = $(this).attr('id') ; 
-test = idMenu;
+		var idMenu = $(this).attr('id'); 
+		test = idMenu;
 		$.post('../ajax/menus.php', {
     		idMenu: idMenu
             
@@ -37,7 +37,7 @@ test = idMenu;
 	});
 
 	categories.on('click', function () {
-		var idCtg = $(this).attr('id') ; 
+		var idCtg = $(this).attr('id'); 
        
         if(test == null){
 		$.post('../ajax/categories.php', {
@@ -82,7 +82,7 @@ $($.fn.connexion = function() {
 				.insertAfter("#categories") //apres les ctg
 				.on('click', this.show) ; //appel de show onclick			*/
 
-            $('#connexionB').on('click', this.show) ;
+            $('#connexionB').on('click', this.show);
 		},
 
 		//méthode show

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  mysql
--- Généré le :  Ven 27 Novembre 2015 à 15:26
+-- Généré le :  Mer 02 Décembre 2015 à 13:14
 -- Version du serveur :  5.5.32-MariaDB
 -- Version de PHP :  5.3.6
 
@@ -53,13 +53,13 @@ INSERT INTO `categorie` (`idCtg`, `idNiveau`, `nomCtg`, `urlCtg`) VALUES
 (2, 1, 'L''ASSBC', '<p> ASSBC </p>'),
 (3, 1, 'Equipes', '<p> Equipes </p>'),
 (4, 1, 'Classement et Résultats', '<p> Classement et Résultats </p>'),
-(5, 1, 'Photos', NULL),
-(6, 1, 'La salle', NULL),
-(7, 2, 'Documents', NULL),
-(8, 1, 'Evénements', NULL),
-(9, 1, 'Partenaires', NULL),
-(10, 1, 'Contact', NULL),
-(11, 3, 'Administration', NULL);
+(5, 1, 'Photos', '<p>Photos</p>'),
+(6, 1, 'La salle', '<p>La salle </p>'),
+(7, 2, 'Documents', '<p>Documents</p>'),
+(8, 1, 'Evénements', '<p>Evenemnts</p>'),
+(9, 1, 'Partenaires', '<p>Partenaires</p>'),
+(10, 1, 'Contact', '<p>Contact</p>'),
+(11, 3, 'Administration', '<p>Administration</p>');
 
 -- --------------------------------------------------------
 
@@ -69,8 +69,21 @@ INSERT INTO `categorie` (`idCtg`, `idNiveau`, `nomCtg`, `urlCtg`) VALUES
 
 CREATE TABLE IF NOT EXISTS `championnat` (
 `idChampionnat` int(11) NOT NULL,
-  `nomChampionnat` varchar(20) CHARACTER SET utf8 NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `nomChampionnat` varchar(40) CHARACTER SET utf8 NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `championnat`
+--
+
+INSERT INTO `championnat` (`idChampionnat`, `nomChampionnat`) VALUES
+(1, 'Pré-National Masculin'),
+(2, 'Pré-National Féminin'),
+(3, 'Départemental Excellence Masculin'),
+(4, 'Départemental Excellence Féminin'),
+(5, 'U17 Honneur Masculin'),
+(6, 'U15 Honneur Masculin'),
+(7, 'U11 Mixte');
 
 -- --------------------------------------------------------
 
@@ -82,7 +95,17 @@ CREATE TABLE IF NOT EXISTS `equipe` (
 `idEquipe` int(11) NOT NULL,
   `idChampionnat` int(11) NOT NULL,
   `nomEquipe` varchar(15) CHARACTER SET utf8 NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `equipe`
+--
+
+INSERT INTO `equipe` (`idEquipe`, `idChampionnat`, `nomEquipe`) VALUES
+(1, 1, 'Senior 1'),
+(2, 2, 'Seniores 1'),
+(3, 3, 'Senior 2'),
+(4, 4, 'Seniores 2');
 
 -- --------------------------------------------------------
 
@@ -111,10 +134,53 @@ INSERT INTO `evenement` (`idEvenement`, `idTypeEvenement`, `dateEvenement`, `lib
 --
 
 CREATE TABLE IF NOT EXISTS `joueur` (
-  `postePrincipal` int(11) NOT NULL,
+  `idJoueur` int(11) NOT NULL,
+  `nomJoueur` varchar(30) NOT NULL,
+  `pnomJoueur` varchar(30) NOT NULL,
   `idEquipe` int(11) NOT NULL,
-`idPers` int(11) NOT NULL
+  `dateNaissance` date DEFAULT NULL,
+  `poste` varchar(20) DEFAULT NULL,
+  `numero` int(11) DEFAULT NULL,
+  `poids` int(11) DEFAULT NULL,
+  `taille` int(11) DEFAULT NULL,
+  `photoid` blob
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `joueur`
+--
+
+INSERT INTO `joueur` (`idJoueur`, `nomJoueur`, `pnomJoueur`, `idEquipe`, `dateNaissance`, `poste`, `numero`, `poids`, `taille`, `photoid`) VALUES
+(1, 'Camus', 'Nicolas', 1, NULL, NULL, 8, NULL, NULL, NULL),
+(2, 'Child', 'Guillaume', 1, '1982-12-04', 'Meneur', 5, NULL, NULL, NULL),
+(3, 'Laplaige', 'Julien', 1, NULL, NULL, 4, NULL, NULL, NULL),
+(4, 'Legros', 'Willy', 1, NULL, NULL, NULL, NULL, NULL, NULL),
+(5, 'Marchal', 'Benjamin', 1, '1983-05-28', 'Aillier', 7, NULL, 179, NULL),
+(6, 'Peru', 'Aurélien', 1, NULL, NULL, 15, NULL, NULL, NULL),
+(7, 'Teixeira', 'David', 1, NULL, NULL, NULL, NULL, NULL, NULL),
+(8, 'Tixier', 'Mike', 1, NULL, NULL, 14, NULL, NULL, NULL),
+(9, 'Koffi', 'Essuih', 1, NULL, NULL, 12, NULL, NULL, NULL),
+(10, 'Fagnon', 'Alexandra', 2, NULL, NULL, 9, NULL, NULL, NULL),
+(11, 'Ratibi', 'Anissa', 2, NULL, NULL, NULL, NULL, NULL, NULL),
+(20, 'Fasquel', 'Quentin', 3, NULL, NULL, NULL, NULL, NULL, NULL),
+(21, 'Edwige', 'Stéphane', 3, NULL, NULL, NULL, NULL, NULL, NULL),
+(22, 'Marchal', 'Léo', 3, NULL, NULL, NULL, NULL, NULL, NULL),
+(12, 'Janniot', 'Claire', 2, NULL, '5', NULL, NULL, NULL, NULL),
+(13, 'Stoclin Ecart', 'Clémence', 2, NULL, NULL, 10, NULL, NULL, NULL),
+(14, 'Blaise', 'Julie', 2, NULL, NULL, 6, NULL, NULL, NULL),
+(23, 'Cordier', 'Vincent', 3, NULL, NULL, NULL, NULL, NULL, NULL),
+(24, 'Thiriat', 'Julien', 3, NULL, NULL, NULL, NULL, NULL, NULL),
+(25, 'Giacomelli', 'Antoine', 3, NULL, NULL, NULL, NULL, NULL, NULL),
+(26, 'Picard', 'Florian', 3, NULL, NULL, NULL, NULL, NULL, NULL),
+(15, 'Soares', 'Laëtitia', 2, NULL, NULL, NULL, NULL, NULL, NULL),
+(16, 'Decrame', 'Marion', 2, NULL, NULL, 14, NULL, NULL, NULL),
+(27, 'Lamblot', 'Pierre', 3, NULL, NULL, NULL, NULL, NULL, NULL),
+(28, 'Deguerne', 'Etienne', 3, NULL, NULL, NULL, NULL, NULL, NULL),
+(29, 'Damien', 'Vincent', 3, NULL, NULL, NULL, NULL, NULL, NULL),
+(30, 'Paradis', 'Grégory', 3, NULL, NULL, NULL, NULL, NULL, NULL),
+(17, 'Maissin', 'Pauline', 2, NULL, NULL, 8, NULL, NULL, NULL),
+(18, 'Mika', 'Pauline', 2, NULL, NULL, 4, NULL, NULL, NULL),
+(19, 'Defaucheux', 'Virginie', 2, NULL, NULL, 11, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -213,7 +279,7 @@ CREATE TABLE IF NOT EXISTS `personne` (
   `adressPers` varchar(50) CHARACTER SET utf8 NOT NULL,
   `villePers` varchar(40) CHARACTER SET utf8 NOT NULL,
   `cpPers` varchar(5) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 --
 -- Contenu de la table `personne`
@@ -228,7 +294,8 @@ INSERT INTO `personne` (`idPers`, `nomPers`, `prenomPers`, `adressMailPers`, `ad
 (6, 'Isartelle', 'Patrick', 'patrick.isartelle@univ-reims.fr', '6 rue du moulin', 'charleville-mézières', '08000'),
 (7, 'dzazd', 'dazdazd', 'a.a@a.fr', 'a.a@a.fr', '', ''),
 (8, 'fddazdaz', 'dazdazd', 'a.a@htbt.fr', 'a.a@htbt.fr', '', ''),
-(9, 'az', 'az', 'a.a@htbt.fr', 'a.a@htbt.fr', '', '');
+(9, 'az', 'az', 'a.a@htbt.fr', 'a.a@htbt.fr', '', ''),
+(10, 'Esp', 'Loris', 'efz.fez@fez.fr', 'efz.fez@fez.fr', '', '');
 
 -- --------------------------------------------------------
 
@@ -299,7 +366,7 @@ CREATE TABLE IF NOT EXISTS `utilisateur` (
   `idNiveau` int(11) NOT NULL,
 `idPers` int(11) NOT NULL,
   `mdp` varchar(255) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `utilisateur`
@@ -314,7 +381,8 @@ INSERT INTO `utilisateur` (`commentaire`, `login`, `idNiveau`, `idPers`, `mdp`) 
 ('c''est patrick !!', 'isart001', 2, 6, 'adbaf3223048a5b125c62152ec2d4312351c799d'),
 ('', 'dazd', 2, 7, 'de5eaf0bfb7796ff84e97c916d7d99c440062b8b'),
 ('', 'dazdaz', 2, 8, '37c2e165ef60fb6d7ea090e79c3dd93dc78f02cd'),
-('', 'az', 2, 9, 'f54a8e725fdcd4b0b5e4f05604fd24358cd70c8f');
+('', 'az', 2, 9, 'f54a8e725fdcd4b0b5e4f05604fd24358cd70c8f'),
+('C''est Loris !!', 'espos001', 2, 10, 'e60ace6755c3d51217fda4ed8c474929b9c34b21');
 
 --
 -- Index pour les tables exportées
@@ -349,12 +417,6 @@ ALTER TABLE `equipe`
 --
 ALTER TABLE `evenement`
  ADD PRIMARY KEY (`idEvenement`);
-
---
--- Index pour la table `joueur`
---
-ALTER TABLE `joueur`
- ADD PRIMARY KEY (`idPers`);
 
 --
 -- Index pour la table `match`
@@ -423,17 +485,12 @@ MODIFY `idPers` int(11) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT pour la table `championnat`
 --
 ALTER TABLE `championnat`
-MODIFY `idChampionnat` int(11) NOT NULL AUTO_INCREMENT;
+MODIFY `idChampionnat` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT pour la table `equipe`
 --
 ALTER TABLE `equipe`
-MODIFY `idEquipe` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT pour la table `joueur`
---
-ALTER TABLE `joueur`
-MODIFY `idPers` int(11) NOT NULL AUTO_INCREMENT;
+MODIFY `idEquipe` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT pour la table `niveau`
 --
@@ -443,7 +500,7 @@ MODIFY `idNiveau` int(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 -- AUTO_INCREMENT pour la table `personne`
 --
 ALTER TABLE `personne`
-MODIFY `idPers` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
+MODIFY `idPers` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT pour la table `saison`
 --
@@ -453,7 +510,7 @@ MODIFY `idSaison` int(11) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT pour la table `utilisateur`
 --
 ALTER TABLE `utilisateur`
-MODIFY `idPers` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
+MODIFY `idPers` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

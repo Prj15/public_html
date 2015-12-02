@@ -79,7 +79,77 @@ SQL
 		return $array;
 	}
 
+ 	public static function hasMenus($id){
+		$bool = false;
+		$occur = 0;
+		$pdo = myPDO::getInstance();
+		$requete = $pdo->prepare(<<<SQL
+								SELECT m.idCtg
+								FROM menu m, categorie c
+								WHERE c.idCtg = :idCtg
+								AND m.idCtg = c.idCtg
+								ORDER BY 1
+SQL
+		);
+		$requete->execute(array(':idCtg'=>$id));
+		$content = $requete->fetch();
+		if($content != '0') $bool = true;
 
+		return $bool;
+	}
+
+	public static function getAccueil(){
+		$pdo = myPDO::getInstance();
+
+		$requete = $pdo->prepare(<<<SQL
+					SELECT urlCtg
+					FROM categorie
+					WHERE nomCtg = 'Accueil'
+					ORDER BY 1
+SQL
+		);
+		$requete->execute();
+		$content = $requete->fetch();
+
+		 if ($content !== false) {
+            
+			if ($content != null) {
+				return $content["urlCtg"] ;
+			} else {
+				return "Il n'y a pas encore de texte pour cette page" ; 
+			}
+		}
+
+	}
+
+	public static function stay($post){
+		$id = $post['idCtg'];
+		$pdo = myPDO::getInstance() ;
+
+		$requete = $pdo->prepare(<<<SQL
+						SELECT urlCtg
+						FROM categorie
+						WHERE idCtg = :idCtg
+SQL
+		) ; 
+
+		$requete->setFetchMode(PDO::FETCH_ASSOC) ; 
+		$requete->execute(array(':idCtg'=>$id)) ; 
+
+		$content = $requete->fetch() ; 
+		
+        if ($content !== false) {
+            
+			if ($content != null) {
+				return $content["urlCtg"] ;
+			} else {
+				return "Il n'y a pas encore de texte pour cette page" ; 
+			}
+		}
+
+
+	}
+ 
 
     public static function getContent($id) {
 		$pdo = myPDO::getInstance() ;
