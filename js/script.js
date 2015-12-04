@@ -4,9 +4,15 @@ $($.fn.categories = function(){
 	var menus = $("#categories li ul li");
 	menus.hide();
 
+	$("#content").css({
+		"margin-top": $("header").height() + 50
+	});
+
 	var categories = $("#categories > li");
 
 	categories.mouseenter(function(){   // On affiche les menus déroulants.
+
+		$("section").text($(this).position().top);
 
 		$(this).find("ul").css({
 			"left": $(this).position().left,
@@ -44,18 +50,13 @@ $($.fn.categories = function(){
         		idCtg: idCtg
         
     		}, function(data) {
-			$('#content').html(data);				
-		});
-    } else { 
-        test = null;
-    }
-      
-
+			    $('#content').html(data);				
+		    });
+        } else { 
+            test = null;
+        }
 	});
-});	
-
-
-
+});
 
 // JQUERY permettant l'affichage d'un formulaire de connexion.
 $($.fn.connexion = function() {
@@ -73,14 +74,6 @@ $($.fn.connexion = function() {
 		//pseudo constructeur
 		init: function(config) {
 			$.extend(this.config, config);//override de la config
-
-			//creation du bouton dans le nav
-			/*$('<button></button>', {
-				text: 'Connexion',
-				class: 'iden'
-			})
-				.insertAfter("#categories") //apres les ctg
-				.on('click', this.show) ; //appel de show onclick			*/
 
             $('#connexionB').on('click', this.show);
 		},
@@ -134,13 +127,6 @@ $($.fn.inscription = function() {
 
 		init: function(config) {
 			$.extend(this.config, config);
-
-			/*$('<button></button>', {
-				text: 'Inscription',
-				class: 'iden'
-			})
-				.insertAfter("#categories") 
-				.on('click', this.show) ;				*/
 
             $('#inscriptionB').on('click', this.show) ; 
 		},

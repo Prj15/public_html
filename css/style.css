@@ -22,10 +22,13 @@ header {
   width: 100%;
   background-color: rgba(0, 34, 102, 0.9);
   color: #ff6600;
+  border-bottom-right-radius: 400px 250px;
+  border-bottom-left-radius: 400px 250px;
 }
 
 #categories {
   margin-top: 10px;
+  margin-left: 50px;
 }
 
 header li {
@@ -63,13 +66,36 @@ header li ul li:hover {
   cursor: pointer;
 }
 
-header button {
+#connexionB, #inscriptionB {
   color: #000;
-  float: right;
-  padding: 5px;
-  margin-right: 8px;
-  margin-top: 8px;
-  border-radius: 7px;
+  position: fixed;
+  background-color: rgba(217, 217, 217, 0.9);
+  padding: 7px;
+  right: -85px;
+  border-radius: 6px;
+  padding-left: 55px;
+}
+
+#connexionB {
+ top: 150px;
+ z-index: 0;
+ background-image: url("../img/connexion.png");
+ background-repeat: no-repeat;
+}
+
+#inscriptionB {
+  top: 195px;
+  z-index: 2s;
+}
+
+#connexionB:hover, #inscriptionB:hover {
+  cursor: pointer;
+  transition: width 1s ease;
+  width: 230px;
+}
+
+header button:nth-of-type(1) {
+  margin-right: 130px;
 }
 /* FIN DE LA GESTION DU HEADER */
 
@@ -82,6 +108,7 @@ form {
   top: 15%;
   text-align: center;
   display: none;
+  z-index: 50;
 }
 
 form fieldset {
@@ -172,12 +199,26 @@ form input[type=submit]:hover {
 }
 /* FIN DE LA GESTION DES EVENEMENTS */
 
+/* DIVS RELATIVES AUX EQUIPES */
 
+#photoE {
+  border : 1px solid red ;
+  display : inline ; 
+}
+
+#joueurs {
+  border : 1px solid blue ; 
+  display : inline ; 
+}
+
+#details {
+  border : 1px solid black ; 
+  display : inline ; 
+}
 /* GESTION DE LA SECTION DE CONTENU */
 #content {
   background-color: rgba(217, 217, 217, 0.9);
   color: #000;
-  margin-top: 10%;
   border: 1px solid black;
   width: 60%;
   margin-left: 20%;
@@ -195,6 +236,8 @@ footer {
   color: #ff6600;
   position: fixed;
   bottom: 0;
+  border-top-right-radius: 400px 250px;
+  border-top-left-radius: 400px 250px;
 }
 /* FIN */
 
