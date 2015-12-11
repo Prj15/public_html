@@ -7,14 +7,13 @@ require_once('../classes/Equipe.class.php');
 $content = "DEFAULT" ; 
 $idMenu = $_POST['idMenu'] ;
 if (isSet($idMenu)) {
-    var_dump($idMenu) ;
-    if ($idMenu == 5) {
+    //var_dump($idMenu) ;
+    if ($idMenu >= 5 && $idMenu <= 8) {
         $equipe1 = Equipe::createFromID($idMenu);
         
-	   $content = <<<HTML
+       $content = <<<HTML
 <div id="photoE">{$equipe1->getPhoto()}</div>
 <div id="joueurs">{$equipe1->joueursToHTML()}</div>
-<div id="details">DETAILS</div>
 HTML;
     } else {
     $content = Menu::getContent($idMenu) ; 
@@ -22,6 +21,7 @@ HTML;
     echo $content ; 
     exit();
 } else {
-	echo "Y a eu un problème " ; 
-	exit () ;
+    echo "Y a eu un problème " ; 
+    exit () ;
 }
+

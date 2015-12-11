@@ -65,7 +65,7 @@ HTML;
 	 */
 	public static function logoutForm($action, $text = "Deconnexion") {
 		$form = <<<HTML
-		<form action="{$action}" method="post">
+		<form id="deco" action="{$action}" method="post">
 			<input type="submit" name="logout" value="{$text}">
 		</form>
 HTML;
@@ -189,7 +189,7 @@ SQL
 		if (session_id()=="") {
 			if (headers_sent()) {
 				throw new SessionException("La session ne peut pas être démarrée, les entêtes HTTP sont déjà loin :) !");	
-			} else {
+            } else {
 				session_start();
 			}
 		}	
@@ -199,7 +199,7 @@ SQL
 	 * Cette fonction permet de savoir si le login passé en paramètre existe déjà
 	 * @param : le login recherché
 	 */
-	public static function chercherLogin($login) {
+    public static function chercherLogin($login) {
 		$pdo = myPDO::getInstance();
 		$request = $pdo->prepare(<<<SQL
 					SELECT idPers
@@ -207,12 +207,10 @@ SQL
 					WHERE login = :login
 SQL
 		);
-		$request->execute(array(':login', $login));
-		if (!$request->fetch()) {
-			return false;
-		} else {
-			return true;
-		}
+        $request->execute(array(':login'=>$login));
+
+        return $request->fetch() ;
+       
 	}
     public static function isConnected() {
         
@@ -233,8 +231,8 @@ SQL
 		}				
 	}
 	public function saveIntoSession() {
-		self::startSession();
-		if (isSet($_SESSION['connected'])) {
+        self::startSession();
+        if (isSet($_SESSION['connected'])) {
 			$_SESSION['utilisateur'] = $this ;
 		}
 	}
@@ -272,11 +270,8 @@ SQL
 	}
 	public static function loginFormSHA1($action, $submitText = 'OK') {
         
-       try { 
-		self::startSession();
-       } catch(SessionException $e) {
-       }
-		$_SESSION[self::session_key]['challenge'] = self::randomString(20) ; 
+	    self::startSession();
+       $_SESSION[self::session_key]['challenge'] = self::randomString(20) ;
 		$html = <<<HTML
 <script type='text/javascript' src='js/sha1.js'></script>
 <script type='text/javascript'>
@@ -302,7 +297,7 @@ SQL
 						<li>
 							<label for="pass">Mot de passe</label>
 							<input type="password" id="passCo" name="pass" placeholder="mot de passe">
-							<input type='hidden' name='code'>
+							<input type='hidden' id ="code" name='code'>
 						</li>
 					</ul>
 				</fieldset>
@@ -316,36 +311,37 @@ SQL
 HTML;
 		return $html;		
 	}
-	public static function createFromAuthSHA1(array $data) {
+	public static function createFromAuthSHA1($data) {
 		
-		if (!isset($data['code'])) {
-			throw new AuthenticationException("login ou mdp non renseigné") ;
-		}
-		self::startSession();
-		var_dump($_SESSION[self::session_key]['challenge']) ;
-		var_dump($data['code']) ;
-		$pdo = myPDO::getInstance(); 
-		$requete = $pdo->prepare(<<<SQL
-						SELECT p.idPers, p.nomPers, p.prenomPers, p.adressMailPers, 
-						p.adressPers, p.villePers, p.cpPers, u.commentaire, u.login, u.idNiveau
-						FROM utilisateur u , personne p 
-						WHERE u.idPers = p.idPers
-						AND SHA1(CONCAT(u.mdp, :challenge, SHA1(u.login))) = :code
+		if (isset($data['code'])) {
+            self::startSession();
+            $pdo = myPDO::getInstance(); 
+            $requete = $pdo->prepare(<<<SQL
+                            SELECT p.idPers, p.nomPers, p.prenomPers, p.adressMailPers, 
+                            p.adressPers, p.villePers, p.cpPers, u.commentaire, u.login, u.idNiveau
+                            FROM utilisateur u , personne p 
+                            WHERE u.idPers = p.idPers
+                            AND SHA1(CONCAT(u.mdp, :challenge, SHA1(u.login))) = :code
 SQL
 		);
 		
-		$requete->execute(array(':challenge' => $_SESSION[self::session_key]['challenge'], 
-								':code' => $data['code']));
-		unset($_SESSION[self::session_key]['challenge']) ; 
-		$requete->setFetchMode(PDO::FETCH_CLASS, 'utilisateur') ;
-		
-		
-		if (($user = $requete->fetch()) !== false) {
-			return $user ;
-		} else {
-			throw new AuthenticationException("Login ou mot de passe incorrect !!") ;
-			
-		}
+            $requete->execute(array(':challenge' => $_SESSION[self::session_key]['challenge'], 
+                                    ':code' => $data['code']));
+            unset($_SESSION[self::session_key]['challenge']) ; 
+            $requete->setFetchMode(PDO::FETCH_CLASS, 'utilisateur') ;
+            
+            
+            if (($user = $requete->fetch()) !== false) {
+                self::startSession();
+                $_SESSION['connected']=true;
+                return $user ;
+            } else {
+                throw new AuthenticationException("Login ou mot de passe incorrect !!") ;
+            }
+
+        } else { 
+            throw new AuthenticationException("login ou mdp non renseigné") ;
+    }
 	}
 	
 }

@@ -19,7 +19,7 @@ $deco = Utilisateur::logoutform('test.php');
 Utilisateur::logoutIfRequested();
 
 if (!Utilisateur::isConnected()) {
-	$form = Utilisateur::loginFormSHA1('page.php') ;	
+	$form = Utilisateur::loginFormSHA1('ajax/traitementCo.php') ;	  
 	$inscription = Utilisateur::signIn('ajax/traitement.php');
 
     $page->appendContent(<<<HTML
@@ -37,7 +37,6 @@ HTML
 } else {
 
         $utilisateur = Utilisateur::createFromSession();
-
         $page->appendJs(<<<JAVASCRIPT
             $($.fn.cacherBoutons = function() {
                 $('.iden').hide();
@@ -49,7 +48,6 @@ JAVASCRIPT
         $niveau = $utilisateur->idNiveau;
 
         $page->appendContent(<<<HTML
-        {$utilisateur->profil()}
         {$deco}
 HTML
     );

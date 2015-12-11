@@ -1,11 +1,14 @@
-
 // JQUERY permettant la gestion des menus déroulants.
 $($.fn.categories = function(){
-	var menus = $("#categories li ul li");
+	var menus = $("#categories li ul");
 	menus.hide();
 
+	$("header li").css({
+		"border-radius": 
+	});
+
 	$("#content").css({
-		"margin-top": $("header").height() + 50
+		"margin-top": $("header").height() + 100,
 	});
 
 	var categories = $("#categories > li");
@@ -23,11 +26,11 @@ $($.fn.categories = function(){
 			"display": "list-item",
 		});
 
-		$(this).find("ul").stop().slideDown("fast");
+		$(this).find("ul").stop().slideDown(250);
 	});
 
 	categories.mouseleave(function(){				
-		$(this).find("ul").stop().slideUp("fast");  // On cache les menus déroulant.
+		$(this).find("ul").stop().slideUp(250);  // On cache les menus déroulant.
 	});
     var test;
 	menus.on('click', function () {
@@ -209,7 +212,6 @@ $(document).ready(function() {
 		$('.messagesinsc').slideUp('800', function() {
 
 			$('#inscription input[type="submit"]').hide().after('<img src="gif/ajax-loader.gif" class="loader">');
-
 			$.post(action, {
 				nom: nom,
 				prenom: prenom,
@@ -229,8 +231,6 @@ $(document).ready(function() {
 		});
 		return false;
 	});
-});
-
 
 
 
@@ -239,16 +239,14 @@ $(document).ready(function() {
 $('#connexion').submit(function() {
 
 		var action = $(this).attr('action');
-		var login = $('#loginCo').val();
-		var pass = $('#passCo').val();
-
+        var code = $('#code').val();
+        
 		$('.messagesCo').slideUp('800', function() {
 
 			$('#connexion input[type="submit"]').hide().after('<img src="ajax-loader.gif" class="loader">');
 
 			$.post(action, {
-				login: login,
-				pass: pass
+                code: code
 			}, function(data) {
 				$('.messagesCo').html(data);
 				$('.messagesCo').slideDown('slow');
@@ -258,3 +256,5 @@ $('#connexion').submit(function() {
 		});
 		return false;
 	});
+
+});

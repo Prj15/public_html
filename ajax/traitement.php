@@ -1,7 +1,6 @@
-<?php
+<?php:tabnew 
 
 require_once('../classes/Utilisateur.class.php') ;
-
 	if (!isSet($_POST['nom'], $_POST['prenom'], $_POST['login'], $_POST['mdp'],
 			$_POST['mail'], $_POST['adresse'], $_POST['ville'], $_POST['CP'], $_POST['commentaire'])) {
 		
@@ -67,4 +66,4 @@ require_once('../classes/Utilisateur.class.php') ;
 			exit();
 		}
 	}
-?>
+

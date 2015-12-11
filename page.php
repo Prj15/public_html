@@ -7,13 +7,14 @@ $p = new Webpage('Authentification') ;
 $deco = Utilisateur::logoutForm('test.php');
 try {
     // Tentative de connexion
-	$utilisateur = Utilisateur::createFromAuthSHA1($_REQUEST) ;
-	$utilisateur->saveIntoSession();	
+    $utilisateur = Utilisateur::createFromAuthSHA1($_REQUEST) ;
+    $p->appendContent($utilisateur->profil());
+    $utilisateur->saveIntoSession();
     $p->appendContent(<<<HTML
 <div>Salut {$utilisateur->nom()}</div>
 
 <form action="test.php" method="post">
-	<input type="submit" value="retour">
+	<input type="submit" value="Retour">
 </form>
 
 {$deco}
