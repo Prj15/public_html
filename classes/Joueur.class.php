@@ -7,19 +7,19 @@ class Joueur {
         $rq = $pdo->prepare(<<<SQL
                     SELECT * 
                     FROM joueur
-                    WHERE id = :id
+                    WHERE idJoueur = :id
 
 SQL
     );
-        $rq->execute(array(':id'=>$id);
-        $rq->setFetchMode(PDO::FETCH_CLASS, 'Joueur');
+        $rq->execute(array(':id'=>$id)) ;
+        $rq->setFetchMode(PDO::FETCH_CLASS, 'joueur');
 
         if (($obj = $rq->fetch()) !== false) return $obj ;
     }
 
 	public function npHTML(){
 		return <<<HTML
-	<li>{$this->pnomJoueur} {$this->nomJoueur}</li>
+	<li id="{$this->idJoueur}">{$this->pnomJoueur} {$this->nomJoueur}</li>\n
 HTML;
 	}
 	

@@ -12,7 +12,7 @@ $($.fn.categories = function(){
 
 	categories.mouseenter(function(){   // On affiche les menus déroulants.
 
-		$("section").text($(this).position().top);
+		//$("section").text($(this).position().top);
 
 		$(this).find("ul").css({
 			"left": $(this).position().left,
@@ -33,7 +33,7 @@ $($.fn.categories = function(){
 	menus.on('click', function () {
 		var idMenu = $(this).attr('id'); 
 		test = idMenu;
-		$.post('../ajax/menus.php', {
+		$.post('ajax/menus.php', {
     		idMenu: idMenu
             
 		}, function(data) {
@@ -46,7 +46,7 @@ $($.fn.categories = function(){
 		var idCtg = $(this).attr('id'); 
        
         if(test == null){
-		$.post('../ajax/categories.php', {
+		$.post('ajax/categories.php', {
         		idCtg: idCtg
         
     		}, function(data) {

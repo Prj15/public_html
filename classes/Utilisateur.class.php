@@ -7,25 +7,20 @@ require_once 'Personne.class.php' ;
 require_once $base.'../exceptions/AuthenticationException.class.php' ;
 require_once $base.'../exceptions/NotInSessionException.class.php' ;
 require_once $base.'../exceptions/SessionException.class.php' ;
-
 class Utilisateur extends Personne {
-
 	const session_key = "__utilisateur__";
-
 	/**
 	 * Retourne le prenom de de l'utilisateur
 	 */
 	public function nom(){
 		return $this->prenomPers;
 	}
-
 	/**
 	 * Retourne le niveau de l'utilisateur sous forme d'un chiffre
 	 */
 	public function niveau() {
 		return $this->idNiveau ; 
 	}
-
 	/**
 	 * Retourne un mot descriptif pour le niveau de l'utilisateur
 	 */
@@ -45,7 +40,6 @@ class Utilisateur extends Personne {
 				break ;
 		}
 	}
-
 	/**
 	 * Méthode de test qui affiche toutes les informations d'un utilisateur
 	 */
@@ -61,7 +55,6 @@ class Utilisateur extends Personne {
 			<p>CP : {$this->cpPers}</p>
 			<p>Niveau : {$this->idNiveau}</p>
 			<p>Commentaire : {$this->commentaire}</p>
-
 		</div>
 HTML;
 		return $profil;
@@ -79,19 +72,15 @@ HTML;
 		
 		return $form;
 	}
-
 	/**
 	 * Retourne un formulaire de test d'inscription
 	 */
 	public static function signIn($action, $submitText="S'inscrire") {
 		$form = <<<HTML
-
 	<form action ="{$action}" method="post" id="inscription">
 		<h2>Inscription</h2>
-
 		<fieldset>
 			<legend>Identité</legend>
-
 			<ul>
 				<li>
 					<label for="nom">Nom</label>	
@@ -115,7 +104,6 @@ HTML;
 				</li>
 			<ul>
 		</fieldset>
-
 		<fieldset>
 			<legend>Adresse postale</legend>
 			<ul>
@@ -133,7 +121,6 @@ HTML;
 				</li>
 			</ul>
 		</fieldset>
-
 		<fieldset>		
 			<legend>Commentaire</legend>
 			<ul>
@@ -142,11 +129,8 @@ HTML;
 				</li>
 			</ul>
 		</fieldset>
-
 		<div class = "messagesinsc">
-
 		</div>
-
 		<fieldset>
 			<input type="submit" name="{$submitText}">
 		</fieldset>
@@ -154,7 +138,6 @@ HTML;
 HTML;
 		return $form;
 	}
-
 	/**
 	 * Méthode qui permet d'ajouter un utilisateur dans la base de données
 	 * IMPORTANT : je pense que le paramètre $niveau est temporaire, à voir à l'avenir
@@ -163,11 +146,8 @@ HTML;
 	public static function ajoutUtilisateur($niveau) {
 		if (!isSet($_POST['nom'], $_POST['prenom'], $_POST['login'], $_POST['mdp'],
 			$_POST['mail'], $_POST['adresse'], $_POST['ville'], $_POST['CP'], $_POST['commentaire'])) {
-
 			return "";
-
 		} else {
-
 			//informations
 			$nom = $_POST['nom'];
 			$prenom = $_POST['prenom'];
@@ -178,24 +158,16 @@ HTML;
 			$ville = $_POST['ville'];
 			$cp = $_POST['CP'];
 			$com = $_POST['commentaire'];
-
-
-
 			$pdo = myPDO::getInstance();
-
 	/* Section ajout de personne */
-
 			$request = $pdo->prepare(<<<SQL
 							INSERT INTO personne (idPers, nomPers, prenomPers, adressMailPers, adressPers, villePers, cpPers) 
 							VALUES (NULL, :nom , :prenom, :mail, :adresse, :ville, :cp);			
 SQL
 			);
-
 			$r1 = $request->execute(array(':nom' => $nom, ':prenom' => $prenom, ':mail' => $mail, 
 							  ':adresse'=>$adresse, ':ville'=>$ville, ':cp'=>$cp));
-
 	/* Section ajout d'un utilisateur */
-
 			$request = $pdo->prepare(<<<SQL
 			INSERT INTO utilisateur (idPers, idNiveau, commentaire, login, mdp)
 							VALUES (NULL, :niveau, :commentaire, :login, :mdp);
@@ -203,9 +175,7 @@ SQL
 			);
 			
 			$r2 = $request->execute(array(':login'=>$login, ':niveau'=>$niveau, ':commentaire'=>$com, ':mdp'=>sha1($mdp)));
-
 	/* Test */
-
 			if ($r1 && $r2) {
 				return true;
 			} else {
@@ -231,53 +201,43 @@ SQL
 	 */
 	public static function chercherLogin($login) {
 		$pdo = myPDO::getInstance();
-
 		$request = $pdo->prepare(<<<SQL
 					SELECT idPers
 					FROM utilisateur
 					WHERE login = :login
 SQL
-
 		);
 		$request->execute(array(':login', $login));
-
 		if (!$request->fetch()) {
 			return false;
 		} else {
 			return true;
 		}
-
 	}
-
     public static function isConnected() {
         
         try {
             self::startSession();
         } catch (SessionException $e ) {
-
         }
-
 		if (isSet($_SESSION['connected'])) {
 			return true;
 		} else {
 			return false;
 		}		
 	}
-
 	public static function logoutIfRequested() {			
 		if (isSet($_POST['logout'])) {
 			self::startSession();
 			session_unset();
 		}				
 	}
-
 	public function saveIntoSession() {
 		self::startSession();
 		if (isSet($_SESSION['connected'])) {
 			$_SESSION['utilisateur'] = $this ;
 		}
 	}
-
 	public static function createFromSession() {
 		self::startSession();
 		if (isSet($_SESSION['utilisateur'])) {
@@ -287,21 +247,16 @@ SQL
 			throw new notInSessionException("La variable de session 'utilisateur' n'est pas initialisée !");
 		}
 	}
-
 	public static function randomString($size) {
-
 		$res = "";
 		
 		for ($i = 0 ; $i<$size ; $i++) {
-
 			$randomMinuscule = rand(97,122);
 			$randomMajuscule = rand(65,90);
 			$randomChiffre = rand(49,57);
-
 			$ternaire = rand(1,3);
 		
 			switch ($ternaire) {
-
 			case 1:
 				$res .= chr($randomMinuscule);
 				break;
@@ -311,13 +266,10 @@ SQL
 			case 3:
 				$res .= chr($randomChiffre);
 				break;
-
 			}
 		}
-
 		return $res;
 	}
-
 	public static function loginFormSHA1($action, $submitText = 'OK') {
         
        try { 
@@ -337,11 +289,9 @@ SQL
 		return false ;
 	}
 </script>
-
 <form action="{$action}" method="post"  onSubmit="return cryptage(this, '{$_SESSION[self::session_key]['challenge']}')" id = "connexion">
 			
 				<h2>Connexion</h2>
-
 				<fieldset>
 					<legend></legend>
 					<ul>
@@ -349,7 +299,6 @@ SQL
 							<label for="login">Login</label>
 							<input type="text" id="loginCo" name="login" placeholder="login">
 						</li>
-
 						<li>
 							<label for="pass">Mot de passe</label>
 							<input type="password" id="passCo" name="pass" placeholder="mot de passe">
@@ -357,29 +306,22 @@ SQL
 						</li>
 					</ul>
 				</fieldset>
-
 				<div class = "messagesCo">
-
 				</div>
-
 				<fieldset>
 					<input type="submit" value="{$submitText}">
 				</fieldset>
 			</form>
 </form>
 HTML;
-
 		return $html;		
 	}
-
 	public static function createFromAuthSHA1(array $data) {
 		
 		if (!isset($data['code'])) {
 			throw new AuthenticationException("login ou mdp non renseigné") ;
 		}
-
 		self::startSession();
-
 		var_dump($_SESSION[self::session_key]['challenge']) ;
 		var_dump($data['code']) ;
 		$pdo = myPDO::getInstance(); 
@@ -394,9 +336,7 @@ SQL
 		
 		$requete->execute(array(':challenge' => $_SESSION[self::session_key]['challenge'], 
 								':code' => $data['code']));
-
 		unset($_SESSION[self::session_key]['challenge']) ; 
-
 		$requete->setFetchMode(PDO::FETCH_CLASS, 'utilisateur') ;
 		
 		
@@ -407,8 +347,5 @@ SQL
 			
 		}
 	}
-
 	
 }
-
-

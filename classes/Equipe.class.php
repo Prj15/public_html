@@ -1,9 +1,7 @@
 <?php 
 
+require_once "Joueur.class.php" ;
 class Equipe {
-
-    private $id = null ; 
-    private $nom = null ;
 
     public static function createFromID($idMenu) {
         $pdo = myPDO::getInstance() ; 
@@ -20,7 +18,7 @@ SQL
         if (($obj = $rq->fetch()) !== false) return $obj ;
      }
 
-    public static function getJoueurs() {
+    public function getJoueurs() {
         $array = array() ; 
         $pdo = myPDO::getInstance() ; 
 
@@ -32,7 +30,7 @@ SQL
 SQL
     );
 
-        $rq->execute(array(':idEquipe'=>$this->id)) ;
+        $rq->execute(array(':idEquipe'=>$this->idEquipe)) ;
 
         while (($data = $rq->fetch()) !== false) {
             array_push($array, Joueur::createFromID($data['idJoueur']));
@@ -43,8 +41,9 @@ SQL
      }
 
     public function joueursToHTML() {
-	   $joueurs = $this->getJoueurs() ;
 
+	   $joueurs = $this->getJoueurs() ;
+      
 	   $html = "<ul>" ; 
 
 	foreach ($joueurs as $joueur) {
@@ -53,30 +52,33 @@ SQL
 
 	$html .= "</ul>" ; 
 
+    $html .=<<<HTML
+    <div id="details">
+        <div id="pj"></div>
+        <ul>
+            <li id="naiss">Né(e) le :</li>
+            <li id="poste">Poste : </li>
+            <li id="numéro">Numéro : </li>
+            <li id="pds">Poids : </li>
+            <li id="taille">Taille : </li>
+        </ul>
+    </div>
+HTML;
+
 	return $html ; 
 
     }
 
     public function getPhoto() {
-        $array = array() ; 
-        $pdo =myPDO::.getInstance();
-
-        $rq = $pdo->prepare(<<<SQL
-                    SELECT photoEq
-                    FROM equipe
-                    WHERE idMenu = :idPic
-                    ORDER BY idMenu
-SQL
-    );    
-        $rq->execute(array(':idPic'=>$this->id)) ;
-
-        if ($img = $rq->fetch()) !== false){
-            return $img; 
-        }else{
-            throw new Exception('Image non trouvée.');
+        $photo = $this->photoEq ; 
+        if ($photo != null) {
+            return <<<HTML
+            <img src="{$photo}">
+HTML;
+        } else {
+            return <<<HTML
+            <img src="img/none.jpg">
+HTML;
         }
-     }
-
-
-	//à compléter
+    }
 }
