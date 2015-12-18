@@ -12,18 +12,18 @@ $(document).ready(function() {
     });
 // FIN DE LA GESTION JQUERY DU CONTENU AJAX.
 
+
+
 // JQUERY: GESTION DE CERTAINES PROPRIETES CSS.
     $(window).on('resize', function() {
 		$("#content").css({
 			"margin-top": $("header").height() + 30
 		});
-
-		$(".forms").css({
-            "left": $(document).width()/2 - $(".forms").width()/2,
-        });
 	});
 // FIN DE LA GESTION DE PROPRIETES CSS.
 	
+
+
 // JQUERY: GESTION DES MENU DEROULANTS.
 	$($.fn.categories = function(){
 		var menus = $("#categories li ul li");
@@ -189,7 +189,7 @@ $(afficheForm($('#inscription'), $('#connexion'), $('#inscriptionB'))) ;
 
 				$('.messagesinsc').slideUp('800', function() {
 
-					$('#inscription input[type="submit"]').hide().after('<img src="../gif/ajax-loader.gif" class="loader">'); // Effet de chargement.
+					$('#inscription input[type="submit"]').hide().after('<img src="gif/ajax-loader.gif" class="loader">'); // Effet de chargement.
 
 					// On poste les informations fournies grâce à la méthode post de JQUERY
 					$.post(action, {
@@ -223,12 +223,11 @@ $(afficheForm($('#inscription'), $('#connexion'), $('#inscriptionB'))) ;
 		        
 				$('.messagesCo').slideUp('800', function() {
 
-					$('#connexion input[type="submit"]').hide().after('<img src="../gif/ajax-loader.gif" class="loader">'); // Effet de chargement.
+					$('#connexion input[type="submit"]').hide().after('<img src="ajax-loader.gif" class="loader">'); // Effet de chargement.
 
 					$.post(action, {
 		                code: code
 					}, function(data) {
-                        if (data=='OK') window.location.href ="../test.php";  
 						$('.messagesCo').html(data);
 						$('.messagesCo').slideDown('slow');
 						$('.loader').fadeOut();

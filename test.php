@@ -22,9 +22,9 @@ if (!Utilisateur::isConnected()) {
 	$form = Utilisateur::loginFormSHA1('ajax/traitementCo.php') ;	  
 	$inscription = Utilisateur::signIn('ajax/traitement.php');
 
-    $page->appendContent(<<<HTML
-				<div id='connexionB'>Connexion</div>
-				<div id='inscriptionB'>Inscription</div>
+    $page->appendToButtons(<<<HTML
+			<button id='connexionB'>Connexion</button>
+			<button id='inscriptionB'>Inscription</button>
 HTML
 );
 

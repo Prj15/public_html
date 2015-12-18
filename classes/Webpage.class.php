@@ -7,23 +7,26 @@ class Webpage {
      * Texte compris entre <head> et </head>
      * @var string
      */
-    private $head  = null ;
+    private $head  = null;
     /**
      * Texte compris entre <title> et </title>
      * @var string
      */
-    private $title = null ;
+    private $title = null;
     /**
      * Texte compris entre <body> et </body>
      * @var string
      */
-    private $body  = null ;
+    private $body  = null;
 
-    private $header = null ;
+    private $header = null;
 
-    private $articles = null ;
+    private $buttons = null;
 
-    private $footer = null ;
+    private $articles = null;
+
+    private $footer = null;
+
 
     /**
      * Constructeur
@@ -159,6 +162,14 @@ HTML
     }
 
     /**
+     * Ajouter du contenu aux boutons.
+     *
+     */
+    public function appendToButtons($buttons) {
+        $this->buttons .= $buttons;
+    }
+
+    /**
      * Ajout d'un article
      *
      */
@@ -196,13 +207,11 @@ HTML
 
     <body>
         <header>
+            <div id="buttons"></div>
             {$this->header}
         </header>
 
-        <section>
-            {$this->articles}
-        </section>
-
+        <a id='shade'></a>
         {$this->body}
 
         <footer>

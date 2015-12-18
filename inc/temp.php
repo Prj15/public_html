@@ -64,13 +64,13 @@ HTML;
 	 * Retourne le code HTML d'un formulaire de deconnexion
 	 */
 	public static function logoutForm($action, $text = "Deconnexion") {
-		$deco = <<<HTML
-		<form id="deco" name="logout" action="{$action}" method="post" >
-			<input type="submit" name="logout"></input>
+		$form = <<<HTML
+		<form id="deco" action="{$action}" method="post">
+			<button type="submit" name="logout" value="{$text}">
 		</form>
 HTML;
 		
-		return $deco;
+		return $form;
 	}
 	/**
 	 * Retourne un formulaire de test d'inscription
@@ -379,7 +379,8 @@ SQL
         $rq->execute(array(':id' => $id)) ;
         $rq->setFetchMode(PDO::FETCH_CLASS, 'utilisateur');
 
-        if(($obj = $rq->fetchAll()) !== false) return $obj;
+        if($obj = $rq->fetchAll() !== false) return $obj;
 
    }
+    public static function createFromID($id) {
 }

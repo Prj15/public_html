@@ -1,5 +1,5 @@
 <?php
-
+require_once('../inc/myPDO.include.php') ;
 class Joueur { 
 
     public static function createFromID($id) {
@@ -22,5 +22,18 @@ SQL
 	<li id="{$this->idJoueur}">{$this->pnomJoueur} {$this->nomJoueur}</li>\n
 HTML;
 	}
+
+    public function getPhoto() {
+        $photo = $this->photoid ; 
+        if ($photo != null) {
+            return <<<HTML
+            <img src="{$photo}">
+HTML;
+        } else {
+            return <<<HTML
+            <img src="img/joueurs/profile.jpg">
+HTML;
+        }
+    }
 	
 }

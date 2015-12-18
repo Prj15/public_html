@@ -1,12 +1,21 @@
 <?php
 require_once '../classes/Utilisateur.class.php';
 
-    if (isSet($_POST['code'])) {
-        $u = Utilisateur::createFromAuthSHA1($_POST['code']);
+    try {
+    	$utilisateur = Utilisateur::createFromAuthSHA1($_REQUEST) ;
+        $utilisateur->saveIntoSession();
+        Utilisateur::unsetChallenge();
+        
+    	echo 'OK';
+	} catch (AuthenticationException $e) {
+		echo '<div class="erreur">Échec d\'authentification&nbsp;:'.$e->getMessage().'</div>' ;
+	} catch (Exception $e) {
+	    echo '<div class="erreur">Un problème est survenu&nbsp;:'.$e->getMessage().'</div>' ;
+	}
+	
 
-        echo '<div class="erreur">OK</div>' ;
-    }
-	/*if (!isSet($_POST['login'], $_POST['pass'])) {
+
+    	/*if (!isSet($_POST['login'], $_POST['pass'])) {
 			echo '<div class="erreur">C\'est pas possible ça l\'ami !</div>' ;
 			exit();
 			

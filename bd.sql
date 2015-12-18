@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  mysql
--- Généré le :  Mer 02 Décembre 2015 à 13:14
+-- Généré le :  Ven 18 Décembre 2015 à 15:25
 -- Version du serveur :  5.5.32-MariaDB
 -- Version de PHP :  5.3.6
 
@@ -58,8 +58,8 @@ INSERT INTO `categorie` (`idCtg`, `idNiveau`, `nomCtg`, `urlCtg`) VALUES
 (7, 2, 'Documents', '<p>Documents</p>'),
 (8, 1, 'Evénements', '<p>Evenemnts</p>'),
 (9, 1, 'Partenaires', '<p>Partenaires</p>'),
-(10, 1, 'Contact', '<p>Contact</p>'),
-(11, 3, 'Administration', '<p>Administration</p>');
+(10, 3, 'Administration', '<p>Administration</p>'),
+(11, 1, 'Contact', '<p>Contact</p>');
 
 -- --------------------------------------------------------
 
@@ -94,18 +94,20 @@ INSERT INTO `championnat` (`idChampionnat`, `nomChampionnat`) VALUES
 CREATE TABLE IF NOT EXISTS `equipe` (
 `idEquipe` int(11) NOT NULL,
   `idChampionnat` int(11) NOT NULL,
-  `nomEquipe` varchar(15) CHARACTER SET utf8 NOT NULL
+  `nomEquipe` varchar(15) CHARACTER SET utf8 NOT NULL,
+  `idMenu` int(11) NOT NULL,
+  `photoEq` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Contenu de la table `equipe`
 --
 
-INSERT INTO `equipe` (`idEquipe`, `idChampionnat`, `nomEquipe`) VALUES
-(1, 1, 'Senior 1'),
-(2, 2, 'Seniores 1'),
-(3, 3, 'Senior 2'),
-(4, 4, 'Seniores 2');
+INSERT INTO `equipe` (`idEquipe`, `idChampionnat`, `nomEquipe`, `idMenu`, `photoEq`) VALUES
+(1, 1, 'Senior 1', 5, 'img/equipes/senior1.jpg'),
+(2, 2, 'Seniores 1', 6, ''),
+(3, 3, 'Senior 2', 7, ''),
+(4, 4, 'Seniores 2', 8, '');
 
 -- --------------------------------------------------------
 
@@ -143,7 +145,7 @@ CREATE TABLE IF NOT EXISTS `joueur` (
   `numero` int(11) DEFAULT NULL,
   `poids` int(11) DEFAULT NULL,
   `taille` int(11) DEFAULT NULL,
-  `photoid` blob
+  `photoid` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -151,13 +153,13 @@ CREATE TABLE IF NOT EXISTS `joueur` (
 --
 
 INSERT INTO `joueur` (`idJoueur`, `nomJoueur`, `pnomJoueur`, `idEquipe`, `dateNaissance`, `poste`, `numero`, `poids`, `taille`, `photoid`) VALUES
-(1, 'Camus', 'Nicolas', 1, NULL, NULL, 8, NULL, NULL, NULL),
-(2, 'Child', 'Guillaume', 1, '1982-12-04', 'Meneur', 5, NULL, NULL, NULL),
-(3, 'Laplaige', 'Julien', 1, NULL, NULL, 4, NULL, NULL, NULL),
-(4, 'Legros', 'Willy', 1, NULL, NULL, NULL, NULL, NULL, NULL),
-(5, 'Marchal', 'Benjamin', 1, '1983-05-28', 'Aillier', 7, NULL, 179, NULL),
-(6, 'Peru', 'Aurélien', 1, NULL, NULL, 15, NULL, NULL, NULL),
-(7, 'Teixeira', 'David', 1, NULL, NULL, NULL, NULL, NULL, NULL),
+(1, 'Camus', 'Nicolas', 1, NULL, NULL, 8, NULL, NULL, 'img/joueurs/nicolascamus.jpg'),
+(2, 'Child', 'Guillaume', 1, '1982-12-04', 'Meneur', 5, NULL, NULL, 'img/joueurs/guillaumechild.jpg'),
+(3, 'Laplaige', 'Julien', 1, NULL, NULL, 4, NULL, NULL, 'img/joueurs/julienlaplaige.jpg'),
+(4, 'Legros', 'Willy', 1, NULL, NULL, NULL, NULL, NULL, 'img/joueurs/willylegros.jpg'),
+(5, 'Marchal', 'Benjamin', 1, '1983-05-28', 'Aillier', 7, NULL, 179, 'img/joueurs/benjaminmarchal.jpg'),
+(6, 'Peru', 'Aurélien', 1, NULL, NULL, 15, NULL, NULL, 'img/joueurs/aurelienperu.jpg'),
+(7, 'Teixeira', 'David', 1, NULL, NULL, NULL, NULL, NULL, 'img/joueurs/davidteixeira.jpg'),
 (8, 'Tixier', 'Mike', 1, NULL, NULL, 14, NULL, NULL, NULL),
 (9, 'Koffi', 'Essuih', 1, NULL, NULL, 12, NULL, NULL, NULL),
 (10, 'Fagnon', 'Alexandra', 2, NULL, NULL, 9, NULL, NULL, NULL),
@@ -236,13 +238,13 @@ INSERT INTO `menu` (`idMenu`, `nomMenu`, `urlMenu`, `idCtg`, `idNiveau`) VALUES
 (16, 'Stages ', NULL, 8, 2),
 (17, 'Divers', NULL, 8, 1),
 (18, 'Tournois', NULL, 8, 1),
-(19, 'Gestion des menus', NULL, 11, 4),
-(20, 'Gestion des utilisateurs', NULL, 11, 4),
-(21, 'Mise à jour de la page d''accueil', NULL, 11, 3),
-(22, 'Ajout de comptes rendus de réunion', NULL, 11, 3),
-(23, 'Mise à jour des résultats d''équipes', NULL, 11, 3),
-(24, 'Gestion de l''album photo', NULL, 11, 3),
-(25, 'Gestion du calendrier', NULL, 11, 3);
+(19, 'Gestion des menus', NULL, 10, 4),
+(20, 'Gestion des utilisateurs', NULL, 10, 4),
+(21, 'Mise à jour de la page d''accueil', NULL, 10, 3),
+(22, 'Ajout de comptes rendus de réunion', NULL, 10, 3),
+(23, 'Mise à jour des résultats d''équipes', NULL, 10, 3),
+(24, 'Gestion de l''album photo', '    <!-- Debut du formulaire -->\r\n   <form enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER[''PHP_SELF'']); ?>" method="post">\r\n    <fieldset>\r\n        <legend>Formulaire</legend>\r\n          <p>\r\n            <label for="fichier_a_uploader" title="Recherchez le fichier à uploader !">Envoyer le fichier :</label>\r\n            <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo MAX_SIZE; ?>" />\r\n            <input name="fichier" type="file" id="fichier_a_uploader" />\r\n            <input type="submit" name="submit" value="Uploader" />\r\n          </p>\r\n      </fieldset>\r\n    </form>\r\n    <!-- Fin du formulaire -->', 10, 3),
+(25, 'Gestion du calendrier', NULL, 10, 3);
 
 -- --------------------------------------------------------
 
@@ -307,7 +309,7 @@ CREATE TABLE IF NOT EXISTS `photo` (
   `idPhoto` int(11) NOT NULL,
   `libPhoto` varchar(20) CHARACTER SET utf8 NOT NULL,
   `legende` text CHARACTER SET utf8 NOT NULL,
-  `image` blob NOT NULL
+  `image` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -373,7 +375,7 @@ CREATE TABLE IF NOT EXISTS `utilisateur` (
 --
 
 INSERT INTO `utilisateur` (`commentaire`, `login`, `idNiveau`, `idPers`, `mdp`) VALUES
-('c''est robin !!', 'grima001', 4, 1, '84fa5fc48ae301cd6808342dadf498d86a7dfd66'),
+('c''est robin !!', 'grima001', 4, 1, 'a94a8fe5ccb19ba61c4c0873d391e987982fbbd3'),
 ('c''est jaufre !!', 'lalle001', 4, 2, '02553c7faada6f0cd3ae19d0ade3351027aa6af2'),
 ('c''est bureau !!', 'burea001', 3, 3, '688c24ec15901a9da7041a2f497c93ecff3095e7'),
 ('c''est membre !!', 'membr001', 2, 4, '587679f84349e8bf34281af770b1e6e3882d9e67'),

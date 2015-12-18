@@ -44,24 +44,16 @@ SQL
 
 	   $joueurs = $this->getJoueurs() ;
       
-	   $html = "<ul>" ; 
+	   $html = "<div id='joueurs'><ul>"; 
 
 	foreach ($joueurs as $joueur) {
 		$html.=$joueur->npHTML() ; 
 	}
 
-	$html .= "</ul>" ; 
-
     $html .=<<<HTML
-    <div id="details">
-        <div id="pj"></div>
-        <ul>
-            <li id="naiss">Né(e) le :</li>
-            <li id="poste">Poste : </li>
-            <li id="numéro">Numéro : </li>
-            <li id="pds">Poids : </li>
-            <li id="taille">Taille : </li>
-        </ul>
+    </ul></div>
+    <div id='details'>
+        
     </div>
 HTML;
 
@@ -69,6 +61,10 @@ HTML;
 
     }
 
+    /**
+     * Retourne la photo de l'équipe 
+     * @return img $photo, photo de l'équipe.
+     */
     public function getPhoto() {
         $photo = $this->photoEq ; 
         if ($photo != null) {
@@ -81,4 +77,22 @@ HTML;
 HTML;
         }
     }
+
+    /**
+     * Retourne le nom de l'équipe 
+     * @return string $nom, nom de l'équipe.
+     */
+    public function getNomEquipe(){
+        $nom = $this->nomEquipe;
+        if($nom != null) {
+            return <<<HTML
+                {$nom}
+HTML;
+        } else {
+            return <<<HTML
+                <p>Pas de nom!</p>
+HTML;
+        }
+    }
+
 }
