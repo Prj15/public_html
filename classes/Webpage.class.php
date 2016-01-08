@@ -21,11 +21,15 @@ class Webpage {
 
     private $header = null;
 
+    private $panel = null;
+
     private $buttons = null;
 
     private $articles = null;
 
     private $footer = null;
+
+
 
 
     /**
@@ -72,24 +76,19 @@ class Webpage {
     public function appendPanel($niveau) {
         $categories = Categorie::getAll($niveau);   
         
-        $panel = <<<HTML
-        <nav>
+        $this->panel = <<<HTML
             <ul id = "categories">
 HTML;
 
         foreach ($categories as $categorie) {
-            $panel .= $categorie->toHtml($niveau);
+            $this->panel .= $categorie->toHtml($niveau);
         }
 
-        $panel .= <<<HTML
-            </ul>
-
+        $this->panel .= <<<HTML
+            </ul>           
             
-            
-        </nav>
 HTML;
 
-        $this->appendToHeader($panel);
     }
 
     /**
@@ -162,7 +161,7 @@ HTML
     }
 
     /**
-     * Ajouter du contenu aux boutons.
+     * Ajouter du contenu à la div boutons.
      *
      */
     public function appendToButtons($buttons) {
@@ -207,7 +206,12 @@ HTML
 
     <body>
         <header>
-            <div id="buttons"></div>
+            <nav>
+                {$this->panel}
+            </nav>
+
+            <div id="buttons">{$this->buttons}</div>     
+                  
             {$this->header}
         </header>
 

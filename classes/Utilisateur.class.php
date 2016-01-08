@@ -66,7 +66,7 @@ HTML;
 	public static function logoutForm($action, $text = "Deconnexion") {
 		$deco = <<<HTML
 		<form id="deco" name="logout" action="{$action}" method="post" >
-			<input type="submit" name="logout"></input>
+			<button type="submit" id="decoB" name="logout">{$text}</button>
 		</form>
 HTML;
 		
@@ -381,5 +381,24 @@ SQL
 
         if(($obj = $rq->fetchAll()) !== false) return $obj;
 
-   }
+    }
+
+    public static function deleteFromID($id) {
+        $rq = myPDO::getInstance()->prepare(<<<SQL
+                    DELETE FROM utilisateur
+                    WHERE idPers = :id 
+SQL
+    );
+        $succes1 = $rq->execute(array(':id'=>$id)) ; 
+
+        $rq = myPDO::getInstance()->prepare(<<<SQL
+                    DELETE FROM personne
+                    WHERE idPers = :id 
+SQL
+    );
+        $succes2 = $rq->execute(array(':id'=>$id)) ; 
+
+        return $succes1&&$succes2 ; 
+
+    }
 }

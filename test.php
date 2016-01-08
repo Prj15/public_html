@@ -37,25 +37,19 @@ HTML
 } else {
 
         $utilisateur = Utilisateur::createFromSession();
-        $page->appendJs(<<<JAVASCRIPT
-            $($.fn.cacherBoutons = function() {
-                $('.iden').hide();
-            });
-JAVASCRIPT
-        );
-
+       
         //LA VALEUR DE NIVEAU EST CHANGEE SI L'UTILISATEUR EST CONNECTE
         $niveau = $utilisateur->idNiveau;
 
-        $page->appendContent(<<<HTML
+        $page->appendToButtons(<<<HTML
         {$deco}
 HTML
-    );
+);
 
 }
 
 //AJOUT DU PANEL QUOI QU'IL ADVIENNE
-$page->appendPanel($niveau) ; 
+$page->appendPanel($niveau); 
 
 $page->appendContent(<<<HTML
 

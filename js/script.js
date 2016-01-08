@@ -1,5 +1,22 @@
-$(document).ready(function() {
+// Variables globales
+var tri_actuel = "1"; // variable globale contenant le tri actuel
+var ordre_t;
 
+// Actions au lancement de la page
+function init() {
+	  // Ordres :
+	  // 1 = plus petit en haut
+	  // -1 = plus grand en haut
+	  // on défini les tris non utilisés à 1, pour qu'ils passent à -1 au moment où on clique dessus
+	ordre_t = [];
+	for (var i = 1; i <= 10; i++) {
+		ordre_t[i] = 1;
+	}
+
+	tableListener();
+}
+$(document).ready(function() {
+	init();
 // JQUERY: GESTION DU CONTENU GENERE A L'AIDE D'AJAX.
     $('#content').on('click', 'li', function() {
         var idJoueur = $(this).attr('id') ;
@@ -8,6 +25,17 @@ $(document).ready(function() {
             id: idJoueur
         }, function(data) {
             $("#details").html(data);
+        });
+    });
+
+    $('#content').on('click', 'input', function() {
+        var idJoueur = $(this).attr('id').split('supprimer')[1] ; 
+        console.log(idJoueur) ;
+
+        $.post('ajax/suppression.php', {
+            idJoueur: idJoueur
+        }, function (data) {
+            $('#reponse').html(data) ;
         });
     });
 // FIN DE LA GESTION JQUERY DU CONTENU AJAX.
@@ -35,7 +63,7 @@ $(document).ready(function() {
 
 		$(this).find("ul").css({
 			"left": $(this).position().left,
-			"top": $(this).position().top + $(this).height() + 28
+			"top": $(this).position().top + $(this).height() + 25
 		});
 
 		$(this).find("ul li").css({
@@ -240,3 +268,173 @@ $(afficheForm($('#inscription'), $('#connexion'), $('#inscriptionB'))) ;
 // FIN DE LA GESTION JQUERY DE SOUMISSION D'UNE CONNEXION.
 
 });
+function refresh() {
+console.log("Je ne passe jamais ici");
+  xmlHttp = new XMLHttpRequest();
+  xmlHttp.onreadystatechange = function() {
+    if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+      document.getElementById("content").innerHTML = xmlHttp.responseText;
+
+      /* On va appeler init, mais ça remet les tris et les ordres par défaut. Donc on récupère le contenu du tri et de l'ordre actuel (avant de le perdre en passant par init). L'ordre, on sauvegarde son inverse pour le réaffecter plus tard (l'inverse car : quand on trigger le click, il le remettra tout seul dans le bon sens)
+      On fait exactement la même chose pour se rappeler du bloc de commentaire qui était ouvert */
+      var tri = tri_actuel;
+      console.log(tri);
+       if (isNumeric(tri)) { // tri sur les notes indiv
+        var ordre_souvenir = ordre_t[tri_actuel] * -1;
+      }
+      init(); // ce batard de init nous fait perdre toutes nos données
+      // heureusement, ordre_souvenir est la! Et le type de tri n'est pas non plus perdu, puisqu'il est param de la fonction dans laquelle on est :)
+      tri_actuel = tri; // on réaffecte la variable globale contenant le tri;
+      // On réaffecte l'ordre, selon le type de tri. Et on trigger le click!
+     //if (isNumeric(tri)) { // tri sur les notes indiv
+        ordre_t[tri] = ordre_souvenir;
+        $("#t" + tri).trigger("click");
+      //}
+      // On est bons !
+
+    }
+  }
+  xmlHttp.open("POST", "ajax/modif.php", true);
+  xmlHttp.send();
+}
+
+function tableListener() {
+
+	$('#content').on('click', '#userstab td',function(){
+    	var idMembre = $(this).parent().attr("id");
+    	var colonne = $(this).attr("class");
+    	//console.log(colonne);
+    	var contenuDuTdAvantChangement = $(this).html();
+
+	    if (contenuDuTdAvantChangement.charAt(0) != '<') {
+	      $(this).html("<input type='text' id='changee' value='" + contenuDuTdAvantChangement + "'>");
+	      tdSurLequelOnClique = $(this);
+	      $(this).find($("input"))[0].setSelectionRange(0, 10); // sélectionne le contenu de l'input. taille de 10, pour être sur (même si c'est dégueu)
+
+	      $('#changee').focus();
+
+	      $('#changee').keypress(function(e) {
+	        if (e.keyCode == 13) {
+	          $('#changee').focusout();
+	        }
+	      });
+
+	      $('#changee').focusout(function() {
+	        var laNouvelleValeur = $(this).val()
+	        if (contenuDuTdAvantChangement != laNouvelleValeur && laNouvelleValeur.length > 0) {
+	          tdSurLequelOnClique.html(laNouvelleValeur);
+	        } else {
+	          tdSurLequelOnClique.html(contenuDuTdAvantChangement);
+	        }
+	        majNote(idMembre,colonne, laNouvelleValeur);
+	      });
+
+	    }
+	});
+
+	$('#content').on('click', 'th', function(i) {
+
+	// changement du contenu de la variable globale
+		var idColTab = this.id.split("t")[1];
+		tri_actuel = idColTab;
+
+		// Suppression de la classe CSS de l'ancienne méthode de tri sélectionnée
+		$(".tri_actuel").removeClass("tri_actuel");
+
+		// Ajout de la classe CSS sur ce TH
+		$(this).addClass("tri_actuel");
+
+		ordre_t[idColTab] *= -1;
+
+		var enfant = $(this).prevAll().length;
+
+		if(idColTab == 1 || idColTab ==10)
+				trierNombres(ordre_t[idColTab], enfant);
+
+		else 	trierChaines(ordre_t[idColTab],enfant);
+
+		for (var j = 1; j <=10; j++) {
+			if(j != idColTab){
+				ordre_t[j] = 1;
+			} 
+		}
+	});  
+}
+
+function majNote(membre, colonne, laNouvelleValeur) {
+    xmlMaj = new XMLHttpRequest();
+    xmlMaj.onreadystatechange = function() {
+      if (xmlMaj.readyState == 4 && xmlMaj.status == 200) {
+        refresh();
+      }
+    }
+    //xmlMaj.open();
+	xmlMaj.open("POST", "ajax/modif.php", false);
+	console.log("Je passe dans Maj js");
+	xmlMaj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	xmlMaj.send("idMembre= " + membre + "&modif=" + colonne + "&valeur=" + laNouvelleValeur);
+  	//refresh();
+}
+
+function trierNombres(ordre, enfant) {
+  var lignes = $('table tbody tr').get(); //recuperons
+  console.log("lignes : " + lignes);
+  lignes.sort(function(a, b) { // compare to classique
+    var primo = Number($(a).children('td').eq(enfant).text());
+    var deuzio = Number($(b).children('td').eq(enfant).text());
+
+    // degage au fond du bus, valeur non numérique !
+    if (primo == "") {
+      return 1;
+    } else if (deuzio == "") {
+      return -1;
+    }
+
+    if (primo > deuzio) {
+      return 1 * ordre;
+    }
+
+    if (primo < deuzio) {
+      return -1 * ordre;
+    }
+    return 0;
+  });
+
+
+  var place = 1; // compteur d'itérations, pour savoir la place de la ligne dans le classement
+  $.each(lignes, function(index, ligne) { // en voiture simone
+    $('table').children('tbody').append(ligne);
+
+    place++;
+  });
+}
+
+
+function trierChaines(ordre, enfant) {
+
+  var lignes = $('table tbody tr').get(); //recuperons
+
+  lignes.sort(function(a, b) { // compare to classique
+    var primo = $(a).children('td').eq(enfant).text().toUpperCase();
+    var deuzio = $(b).children('td').eq(enfant).text().toUpperCase();
+
+    if (primo > deuzio) {
+      return -1 * ordre;
+    }
+
+    if (primo < deuzio) {
+      return 1 * ordre;
+    }
+    return 0;
+  });
+
+  $.each(lignes, function(index, ligne) { // en voiture simone
+    $('table').children('tbody').append(ligne);
+  });
+}
+
+function isNumeric(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
+

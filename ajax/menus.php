@@ -38,36 +38,41 @@ HTML;
                 <div id="next"></div>
 HTML;
         $content .= calendar($month, $year);
-
+/**
+ * Section TABLEAU , Gestion des utilisateurs
+ *
+ *
+ *
+ **/  
     } else if ($idMenu == 20) {
-        $users = Utilisateur::getAll() ;
-        var_dump($users);
-
-        $tableau = "<table>" ;
-       //Identifiant 
-        $tableau .= "<tr> <th> Identifiant </th>" ;
-        
+       $users = Utilisateur::getAll() ;
+        //var_dump($users);
+        $tableau = "<table id=\"userstab\">" ;
+        $tableau.=<<<HTML
+        <thead> <tr><th id="t1" class="tri_actuel">Identifiant</th><th id="t2">Nom</th><th id="t3">Prenom</th><th id="t4">AdresseMail</th>
+        <th id="t5">Adresse</th><th id ="t6">Ville</th><th id ="t7">CP</th><th id ="t8">Comm</th><th id ="t9">login</th><th id ="t10">Niveau</th><th>Suppression</th>
+        </tr></thead>
+HTML;
         foreach ($users as $user) {
-            $tableau.= "<td>".$user[0]->idPers."</td>" ;
-        }
-
-        $tableau .= "</tr>" ;
-
-        //Nom
-$tableau .= "<tr> <th> Nom </th>" ;
-        
-        foreach ($users as $user) {
-            $tableau.= "<td>".$user[0]->nomPers."</td>" ;
-        }
-
-        $tableau .= "</tr>" ;
-
-        
-
+                $idMod ="modifier" . $user[0]->idPers;
+                $idSuppr ="supprimer" . $user[0]->idPers;
+                $tableau.="<tr id=\"{$user[0]->idPers}\"><td>{$user[0]->idPers}</td>";
+                $tableau.="<td class=\"nomPers\">{$user[0]->nomPers}</td>";
+                $tableau.="<td class=\"prenomPers\">{$user[0]->prenomPers}</td>";
+                $tableau.="<td class=\"adressMailPers\">{$user[0]->adressMailPers}</td>";
+                $tableau.="<td class=\"adressPers\">{$user[0]->adressPers}</td>";
+                $tableau.="<td class=\"villePers\">{$user[0]->villePers}</td>";
+                $tableau.="<td class=\"cpPers\">{$user[0]->cpPers}</td>";
+                $tableau.="<td class=\"commentaire\">{$user[0]->commentaire}</td>";
+                $tableau.="<td class=\"login\">{$user[0]->login}</td>";
+                $tableau.="<td class=\"idNiveau\">{$user[0]->idNiveau}</td>";
+                $tableau.="<td><input id=\"{$idSuppr}\" type=\"submit\" value=\"Supprimer\"></td></tr>";
+            }
 
         $tableau .= "</table>" ;
-
-       $content = $tableau ;  
+        $warning = "<div id='warning'> <span></span> Attention, en temps qu'administrateur, vous impactez directement la base de données ! Soyez vigilant sur cette page ! </div>" ;
+        $resultat = "<div id='reponse'></div>" ; 
+       $content = $warning.$tableau.$resultat ;
     } else {
         $content = Menu::getContent($idMenu) ; 
     }

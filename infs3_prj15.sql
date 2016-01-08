@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  mysql
--- Généré le :  Ven 18 Décembre 2015 à 15:25
+-- Généré le :  Ven 08 Janvier 2016 à 15:06
 -- Version du serveur :  5.5.32-MariaDB
 -- Version de PHP :  5.3.6
 
@@ -243,7 +243,7 @@ INSERT INTO `menu` (`idMenu`, `nomMenu`, `urlMenu`, `idCtg`, `idNiveau`) VALUES
 (21, 'Mise à jour de la page d''accueil', NULL, 10, 3),
 (22, 'Ajout de comptes rendus de réunion', NULL, 10, 3),
 (23, 'Mise à jour des résultats d''équipes', NULL, 10, 3),
-(24, 'Gestion de l''album photo', '    <!-- Debut du formulaire -->\r\n   <form enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER[''PHP_SELF'']); ?>" method="post">\r\n    <fieldset>\r\n        <legend>Formulaire</legend>\r\n          <p>\r\n            <label for="fichier_a_uploader" title="Recherchez le fichier à uploader !">Envoyer le fichier :</label>\r\n            <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo MAX_SIZE; ?>" />\r\n            <input name="fichier" type="file" id="fichier_a_uploader" />\r\n            <input type="submit" name="submit" value="Uploader" />\r\n          </p>\r\n      </fieldset>\r\n    </form>\r\n    <!-- Fin du formulaire -->', 10, 3),
+(24, 'Gestion de l''album photo', '<form id="uploadimg" method="post" action="ajax/reception.php" enctype="multipart/form-data">\r\n     <fieldset>\r\n          <ul>\r\n               <li>\r\n                    <label for="image">Fichier (tous formats | max. 1 Mo) :</label>\r\n                    <input type="hidden" name="MAX_FILE_SIZE" value="3145728" />\r\n                    <input type="file" name="image" id="image" />\r\n               </li>\r\n\r\n               <li>\r\n                    <label for="titre">Titre du fichier (max. 50 caractères) :</label>\r\n                    <input type="text" name="titre" value="Titre du fichier" id="titre" />\r\n               </li>\r\n\r\n               <li>\r\n                    <label for="description">Description de votre fichier (max. 255 caractères) :</label>\r\n                    <textarea name="description" id="description"></textarea>\r\n               </li>\r\n          </ul>\r\n     </fieldset>\r\n     <div class="messUpload"></div>\r\n     <fieldset>\r\n          <input type="submit" name="submit" value="Envoyer" />\r\n     </fieldset>\r\n</form>', 10, 3),
 (25, 'Gestion du calendrier', NULL, 10, 3);
 
 -- --------------------------------------------------------
