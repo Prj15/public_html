@@ -73,7 +73,7 @@ HTML;
 HTML;
         } else {
             return <<<HTML
-            <img src="img/none.jpg">
+            <img src="img/equipes/none.jpg">
 HTML;
         }
     }

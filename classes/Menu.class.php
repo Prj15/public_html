@@ -65,7 +65,7 @@ SQL
 	public function toHtml() {
 		$nomCtg = $this->getCategorie()->nomCtg;
 		$menu = <<<HTML
-<li id="{$this->idMenu}" class="{$nomCtg} menus">{$this->nomMenu}</li>
+<li id="Menu{$this->idMenu}" class="{$nomCtg} menus">{$this->nomMenu}</li>
 HTML;
 
 		return $menu ; 

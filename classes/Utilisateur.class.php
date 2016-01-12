@@ -401,4 +401,104 @@ SQL
         return $succes1&&$succes2 ; 
 
     }
+
+    public static function majInfo($id, $colonne, $valeur){
+        $inUtil = array('nomPers', 'prenomPers', 'adressMailPers', 'adressPers', 'villePers', 'cpPers', 'commentaire', 'login', 'idNiveau'); 
+        
+        switch($colonne) {
+            case 'nomPers' : 
+                $req = myPDO::getInstance()->prepare(<<<SQL
+                                                    UPDATE personne
+                                                    SET nomPers = :valeur
+                                                    WHERE idPers = :id
+SQL
+                );
+                break ;
+
+            case 'prenomPers' : 
+                $req = myPDO::getInstance()->prepare(<<<SQL
+                                                    UPDATE personne
+                                                    SET prenomPers = :valeur
+                                                    WHERE idPers = :id
+SQL
+                );
+                break ; 
+            
+            case 'adressMailPers' : 
+                $req = myPDO::getInstance()->prepare(<<<SQL
+                                                    UPDATE personne
+                                                    SET adressMailPers = :valeur
+                                                    WHERE idPers = :id
+SQL
+                );
+                break ; 
+
+
+            case 'adressPers' : 
+                $req = myPDO::getInstance()->prepare(<<<SQL
+                                                    UPDATE personne
+                                                    SET adressPers = :valeur
+                                                    WHERE idPers = :id
+SQL
+                );
+                break ; 
+
+
+            case 'villePers' : 
+                $req = myPDO::getInstance()->prepare(<<<SQL
+                                                    UPDATE personne
+                                                    SET villePers = :valeur
+                                                    WHERE idPers = :id
+SQL
+                );
+                break ; 
+
+
+            case 'cpPers' : 
+                $req = myPDO::getInstance()->prepare(<<<SQL
+                                                    UPDATE personne
+                                                    SET cpPers = :valeur
+                                                    WHERE idPers = :id
+SQL
+                );
+                break ; 
+
+
+            case 'commentaire' : 
+                $req = myPDO::getInstance()->prepare(<<<SQL
+                                                    UPDATE utilisateur
+                                                    SET commentaire = :valeur
+                                                    WHERE idPers = :id
+SQL
+                );
+                break ;
+
+
+            case 'login' : 
+                $req = myPDO::getInstance()->prepare(<<<SQL
+                                                    UPDATE utilisateur
+                                                    SET login = :valeur
+                                                    WHERE idPers = :id
+SQL
+                );
+                break ; 
+
+
+            case 'idNiveau' : 
+                $req = myPDO::getInstance()->prepare(<<<SQL
+                                                    UPDATE utilisateur
+                                                    SET idNiveau = :valeur
+                                                    WHERE idPers = :id
+SQL
+                );
+                break ; 
+        } 
+
+        if ($req->execute(array(':valeur' => $valeur,':id' => $id))) {
+            echo "<div class='succes'> Modification effectuée ! </div>" ; 
+        } else {
+            echo "<div class='erreur'> Il y a eu une erreur ! </div>" ;
+        }
+   }
+
 }

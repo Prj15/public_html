@@ -19,8 +19,7 @@ $(document).ready(function() {
 	init();
 // JQUERY: GESTION DU CONTENU GENERE A L'AIDE D'AJAX.
     $('#content').on('click', 'li', function() {
-        var idJoueur = $(this).attr('id') ;
-
+	    var idJoueur = /([0-9]+)/.exec($(this).attr('id'))[0] ;
         $.post('ajax/joueurs.php', {
             id: idJoueur
         }, function(data) {
@@ -28,19 +27,40 @@ $(document).ready(function() {
         });
     });
 
-    $('#content').on('click', 'input', function() {
+    $('#content').on('click', '.userSuppr', function() {
         var idJoueur = $(this).attr('id').split('supprimer')[1] ; 
         console.log(idJoueur) ;
-
+        var phrase = "GTGTTG" ; 
         $.post('ajax/suppression.php', {
             idJoueur: idJoueur
         }, function (data) {
-            $('#reponse').html(data) ;
+            phrase = data ;
         });
+
+        refresh() ; 
+        $('#reponse').html(phrase) ; 
+        
     });
+
 // FIN DE LA GESTION JQUERY DU CONTENU AJAX.
 
+// JQUERY: GESTION DU SLIDESHOW.
+	$(function() {
+		var current = 1;
+		$("#slideshow #images li:nth-of-type(" + current+1 + ")").hide();
+
+		$("#content").on('click', '#slideNext', function() {
+			$("#slideshow #images li:nth-of-type(" + current + ")").hide();
+			$("#slideshow #images li:nth-of-type(" + current+1 + ")").animate({"display": "block"});
+		});
+	});
+// FIN DE LA GESTION JQUERY DU SLIDESHOW.
+
 // JQUERY: GESTION DE CERTAINES PROPRIETES CSS.
+	$("#content").css({
+		"margin-top": $("header").height() + 30
+	});
+
     $(window).on('resize', function() {
 		$("#content").css({
 			"margin-top": $("header").height() + 30
@@ -79,7 +99,7 @@ $(document).ready(function() {
 
     var test;
 	menus.on('click', function () {
-		var idMenu = $(this).attr('id'); 
+		var idMenu = /([0-9]+)/.exec($(this).attr('id'))[0] ;
 		test = idMenu;
 		$.post('ajax/menus.php', {
 		    idMenu: idMenu
@@ -91,8 +111,7 @@ $(document).ready(function() {
 		});
 
 		categories.on('click', function () {
-			var idCtg = $(this).attr('id'); 
-		      
+			var idCtg = /([0-9]+)/.exec($(this).attr('id'))[0] ;
 		    if(test == null){
 				$.post('ajax/categories.php', {
 		        		idCtg: idCtg
@@ -270,40 +289,21 @@ $(afficheForm($('#inscription'), $('#connexion'), $('#inscriptionB'))) ;
 });
 function refresh() {
 console.log("Je ne passe jamais ici");
-  xmlHttp = new XMLHttpRequest();
-  xmlHttp.onreadystatechange = function() {
-    if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-      document.getElementById("content").innerHTML = xmlHttp.responseText;
+    $.post("../ajax/menus.php", {
+        idMenu: 20
+    }, function(data) {
+        $("#content").html(data) ;     
 
-      /* On va appeler init, mais ça remet les tris et les ordres par défaut. Donc on récupère le contenu du tri et de l'ordre actuel (avant de le perdre en passant par init). L'ordre, on sauvegarde son inverse pour le réaffecter plus tard (l'inverse car : quand on trigger le click, il le remettra tout seul dans le bon sens)
-      On fait exactement la même chose pour se rappeler du bloc de commentaire qui était ouvert */
-      var tri = tri_actuel;
-      console.log(tri);
-       if (isNumeric(tri)) { // tri sur les notes indiv
-        var ordre_souvenir = ordre_t[tri_actuel] * -1;
-      }
-      init(); // ce batard de init nous fait perdre toutes nos données
-      // heureusement, ordre_souvenir est la! Et le type de tri n'est pas non plus perdu, puisqu'il est param de la fonction dans laquelle on est :)
-      tri_actuel = tri; // on réaffecte la variable globale contenant le tri;
-      // On réaffecte l'ordre, selon le type de tri. Et on trigger le click!
-     //if (isNumeric(tri)) { // tri sur les notes indiv
-        ordre_t[tri] = ordre_souvenir;
-        $("#t" + tri).trigger("click");
-      //}
-      // On est bons !
-
-    }
-  }
-  xmlHttp.open("POST", "ajax/modif.php", true);
-  xmlHttp.send();
+    });
 }
 
 function tableListener() {
 
 	$('#content').on('click', '#userstab td',function(){
+
     	var idMembre = $(this).parent().attr("id");
     	var colonne = $(this).attr("class");
-    	//console.log(colonne);
+    	if(colonne != 'idPers'){
     	var contenuDuTdAvantChangement = $(this).html();
 
 	    if (contenuDuTdAvantChangement.charAt(0) != '<') {
@@ -323,14 +323,39 @@ function tableListener() {
 	        var laNouvelleValeur = $(this).val()
 	        if (contenuDuTdAvantChangement != laNouvelleValeur && laNouvelleValeur.length > 0) {
 	          tdSurLequelOnClique.html(laNouvelleValeur);
+                        
+              /*console.log("memebre : " +idMembre);
+                console.log("colonne : " + colonne);
+                console.log("valeur : " + laNouvelleValeur);*/
+            $.post("../ajax/modif.php", {
+                idMembre: idMembre,
+                modif: colonne,
+                valeur: laNouvelleValeur
+            }, function (data) {
+                $('#reponse').html(data) ; 
+            });
+
 	        } else {
 	          tdSurLequelOnClique.html(contenuDuTdAvantChangement);
 	        }
-	        majNote(idMembre,colonne, laNouvelleValeur);
+	        //$('#reponse').html(majCase(idMembre,colonne, laNouvelleValeur));
 	      });
-
 	    }
+        }
 	});
+
+function majCase(idMembre, colonne, laNouvelleValeur) {
+    console.log("memebre : " +idMembre);
+    console.log("colonne : " + colonne);
+    console.log("valeur : " + laNouvelleValeur);
+    $.post("../ajax/modif.php", {
+        idMembre: idMembre,
+        modif: colonne,
+        valeur: laNouvelleValeur
+    }, function (data) {});
+    //refresh() ; 
+}
+
 
 	$('#content').on('click', 'th', function(i) {
 
@@ -356,25 +381,11 @@ function tableListener() {
 		for (var j = 1; j <=10; j++) {
 			if(j != idColTab){
 				ordre_t[j] = 1;
-			} 
+			}
 		}
 	});  
 }
 
-function majNote(membre, colonne, laNouvelleValeur) {
-    xmlMaj = new XMLHttpRequest();
-    xmlMaj.onreadystatechange = function() {
-      if (xmlMaj.readyState == 4 && xmlMaj.status == 200) {
-        refresh();
-      }
-    }
-    //xmlMaj.open();
-	xmlMaj.open("POST", "ajax/modif.php", false);
-	console.log("Je passe dans Maj js");
-	xmlMaj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	xmlMaj.send("idMembre= " + membre + "&modif=" + colonne + "&valeur=" + laNouvelleValeur);
-  	//refresh();
-}
 
 function trierNombres(ordre, enfant) {
   var lignes = $('table tbody tr').get(); //recuperons
@@ -432,9 +443,3 @@ function trierChaines(ordre, enfant) {
     $('table').children('tbody').append(ligne);
   });
 }
-
-function isNumeric(n) {
-  return !isNaN(parseFloat(n)) && isFinite(n);
-}
-
-

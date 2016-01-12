@@ -190,11 +190,11 @@ SQL
 
 		if (count($menus) == 0) {
 			return <<<HTML
-<li id="{$this->idCtg}" class="ctgs">{$nomCtg}</li>
+<li id="Categorie{$this->idCtg}" class="ctgs">{$nomCtg}</li>
 HTML;
 		} else {
 			$categorie = <<<HTML
-<li id="{$this->idCtg}" class="ctgs">{$nomCtg}
+<li id="Categorie{$this->idCtg}" class="ctgs">{$nomCtg}
 	<ul>
 HTML;
 		

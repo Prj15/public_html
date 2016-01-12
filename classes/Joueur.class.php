@@ -19,7 +19,7 @@ SQL
 
 	public function npHTML(){
 		return <<<HTML
-	<li id="{$this->idJoueur}">{$this->pnomJoueur} {$this->nomJoueur}</li>\n
+	<li id="Joueur{$this->idJoueur}">{$this->pnomJoueur} {$this->nomJoueur}</li>\n
 HTML;
 	}
 

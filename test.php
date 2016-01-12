@@ -3,7 +3,7 @@
 /*CETTE PAGE EST TEMPORAIRE ET FAIT PARTIE DU SYSTEME DE TEST */
 require_once 'classes/Webpage.class.php' ;
 require_once 'classes/Utilisateur.class.php' ;
-
+require_once 'classes/Categorie.class.php' ;
 //REGLAGES DE LA PAGE
 $page = new Webpage('Test');
 $page->appendCssUrl('css/style.css');
@@ -50,18 +50,11 @@ HTML
 
 //AJOUT DU PANEL QUOI QU'IL ADVIENNE
 $page->appendPanel($niveau); 
-
+$accueil = Categorie::getAccueil() ;
 $page->appendContent(<<<HTML
 
 <section id="content"> 
-    <p> 
-        Ferrars all spirits his imagine effects amongst neither. It bachelor cheerful of mistaken. Tore has sons put upon wife use bred seen. Its dissimilar invitation ten has discretion unreserved. Had you him humoured jointure ask expenses learning. Blush on in jokes sense do do. Brother hundred he assured reached on up no. On am nearer missed lovers. To it mother extent temper figure better.
-        Ferrars all spirits his imagine effects amongst neither. It bachelor cheerful of mistaken. Tore has sons put upon wife use bred seen. Its dissimilar invitation ten has discretion unreserved. Had you him humoured jointure ask expenses learning. Blush on in jokes sense do do. Brother hundred he assured reached on up no. On am nearer missed lovers. To it mother extent temper figure better. 
-    </p>
-    <p> 
-        Ferrars all spirits his imagine effects amongst neither. It bachelor cheerful of mistaken. Tore has sons put upon wife use bred seen. Its dissimilar invitation ten has discretion unreserved. Had you him humoured jointure ask expenses learning. Blush on in jokes sense do do. Brother hundred he assured reached on up no. On am nearer missed lovers. To it mother extent temper figure better.
-        Ferrars all spirits his imagine effects amongst neither. It bachelor cheerful of mistaken. Tore has sons put upon wife use bred seen. Its dissimilar invitation ten has discretion unreserved. Had you him humoured jointure ask expenses learning. Blush on in jokes sense do do. Brother hundred he assured reached on up no. On am nearer missed lovers. To it mother extent temper figure better. 
-    </p> 
+    {$accueil}
 </section>
 HTML
 );

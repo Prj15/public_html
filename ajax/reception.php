@@ -25,11 +25,11 @@ if (isset($_FILES) && isset($_POST)) {
 	$erreur = "DEFAULT" ; 
 	$reussite = "DEFAULT" ;
 
-	/*var_dump($_FILES) ;
-	var_dump($image_sizes = getimagesize($tmp)) ;*/
+	var_dump($_FILES) ;
+	var_dump($image_sizes = getimagesize($tmp)) ;
 
-	$maxwidth = 3000 ; 
-	$maxheight = 2000 ;
+	$maxwidth = 10000 ; 
+    $maxheight = 10000 ;
 
 	$extensions_valides = array('jpg' , 'jpeg' , 'gif' , 'png');
 	$extension_upload = strtolower(substr(strrchr($nom, '.'),1));
@@ -41,7 +41,7 @@ if (isset($_FILES) && isset($_POST)) {
 		else {
 			switch ($code) {
 				case 0 : 
-                $dir = "img/album" ; 
+                $dir = "../img/album" ; 
 				$resultat = move_uploaded_file($tmp,"$dir/$nom");
 				if ($resultat) $reussite = "Fichier correctement uploadé et transféré" ; 
 				break ; 
@@ -117,7 +117,8 @@ CSS
 }
 
 	$p->appendContent(<<<HTML
-<button onclick="window.location.href ='../test.php';">Retour à l'acceuil</button>
+<button onclick="window.location.href ='../test.php';">Retour à l'accueil</button>
+
 HTML
 );
 	echo $p->toHTML(); 
