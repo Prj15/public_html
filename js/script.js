@@ -30,7 +30,7 @@ $(document).ready(function() {
     $('#content').on('click', '.userSuppr', function() {
         var idJoueur = $(this).attr('id').split('supprimer')[1] ; 
         console.log(idJoueur) ;
-        var phrase = "GTGTTG" ; 
+        var phrase = "" ; 
         $.post('ajax/suppression.php', {
             idJoueur: idJoueur
         }, function (data) {
@@ -309,7 +309,7 @@ function tableListener() {
 	    if (contenuDuTdAvantChangement.charAt(0) != '<') {
 	      $(this).html("<input type='text' id='changee' value='" + contenuDuTdAvantChangement + "'>");
 	      tdSurLequelOnClique = $(this);
-	      $(this).find($("input"))[0].setSelectionRange(0, 10); // sélectionne le contenu de l'input. taille de 10, pour être sur (même si c'est dégueu)
+	      $(this).find($("input"))[0].setSelectionRange(0, 10); // sélectionne le contenu de l'input. taille de 10
 
 	      $('#changee').focus();
 
@@ -394,7 +394,7 @@ function trierNombres(ordre, enfant) {
     var primo = Number($(a).children('td').eq(enfant).text());
     var deuzio = Number($(b).children('td').eq(enfant).text());
 
-    // degage au fond du bus, valeur non numérique !
+    
     if (primo == "") {
       return 1;
     } else if (deuzio == "") {
@@ -413,7 +413,7 @@ function trierNombres(ordre, enfant) {
 
 
   var place = 1; // compteur d'itérations, pour savoir la place de la ligne dans le classement
-  $.each(lignes, function(index, ligne) { // en voiture simone
+  $.each(lignes, function(index, ligne) { 
     $('table').children('tbody').append(ligne);
 
     place++;
